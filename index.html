@@ -11,7 +11,6 @@
   :root{
     --bg:#12161d;
     --panel:#1b212b;
-    --panel-2:#20273240;
     --grid-line:#262d3a;
     --text:#eef1f6;
     --muted:#8b93a3;
@@ -31,14 +30,11 @@
     -webkit-font-smoothing:antialiased;
   }
   .mono{font-family:'IBM Plex Mono',monospace;}
-  .display{font-family:'Space Grotesk','Noto Sans TC',sans-serif;}
 
-  /* language toggling */
   .en{display:none;}
   body.lang-en .en{display:inline;}
   body.lang-en .zh{display:none;}
 
-  /* faint graph-paper grid backdrop */
   .grid-overlay{
     position:fixed; inset:0; pointer-events:none; z-index:0;
     background-image:
@@ -48,11 +44,7 @@
     opacity:0.35;
   }
 
-  /* top bar: language toggle */
-  .topbar{
-    position:fixed; top:0; right:0; z-index:20;
-    padding:20px 28px;
-  }
+  .topbar{ position:fixed; top:0; right:0; z-index:20; padding:20px 28px; }
   .lang-switch{
     display:flex; border:1px solid var(--grid-line); border-radius:999px;
     background:rgba(18,22,29,0.8); backdrop-filter:blur(6px);
@@ -65,7 +57,6 @@
   }
   .lang-switch button.active{ color:var(--bg); background:var(--amber); font-weight:600;}
 
-  /* side nav (report tabs) */
   .tabnav{
     position:fixed; left:0; top:0; bottom:0; z-index:20;
     display:flex; flex-direction:column; justify-content:center;
@@ -91,15 +82,13 @@
     color:var(--teal); text-transform:uppercase; margin-bottom:18px; display:block;
   }
 
-  /* ---------- HERO ---------- */
   .hero{ padding-top:140px; display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center; min-height:92vh;}
   .hero h1{
     font-family:'Noto Sans TC',sans-serif; font-weight:900; font-size:clamp(40px,6vw,72px);
     line-height:1.15; letter-spacing:-0.01em; margin-bottom:22px;
   }
   .hero .role{ font-size:19px; color:var(--text); font-weight:500; margin-bottom:18px; }
-  .hero .role .accent{ color:var(--amber); }
-  .hero p.sub{ color:var(--muted); font-size:16px; max-width:46ch; margin-bottom:36px; }
+  .hero p.sub{ color:var(--muted); font-size:16px; max-width:48ch; margin-bottom:36px; }
   .btn{
     display:inline-flex; align-items:center; gap:10px; font-family:'IBM Plex Mono',monospace;
     font-size:13px; letter-spacing:0.03em; padding:14px 22px; border-radius:var(--radius);
@@ -108,7 +97,6 @@
   }
   .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 24px -8px rgba(217,164,65,0.5); }
 
-  /* terminal card */
   .terminal{
     background:var(--panel); border:1px solid var(--grid-line); border-radius:6px;
     box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
@@ -120,14 +108,45 @@
   }
   .terminal .dot{ width:10px; height:10px; border-radius:50%; background:var(--grid-line); }
   .terminal .bar span.mono{ margin-left:8px; font-size:11px; color:var(--muted); }
-  .terminal .body{ padding:22px 20px; font-family:'IBM Plex Mono',monospace; font-size:13px; min-height:210px; }
-  .terminal .line{ color:var(--muted); margin-bottom:10px; opacity:0; }
-  .terminal .line .prompt{ color:var(--teal); }
-  .terminal .line.done{ color:var(--amber); }
-  .terminal .cursor{ display:inline-block; width:7px; height:14px; background:var(--teal); vertical-align:middle; animation:blink 1s steps(1) infinite; }
-  @keyframes blink{ 50%{ opacity:0; } }
+  .scene{ position:relative; padding:34px 22px 28px; min-height:220px; display:flex; }
+  .scene-divider{
+    position:absolute; left:50%; top:14px; bottom:14px; width:1px; transform:translateX(-0.5px);
+    background:linear-gradient(180deg, transparent, var(--grid-line) 15%, var(--grid-line) 85%, transparent);
+  }
+  .scene-label{
+    position:absolute; top:0; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.08em;
+    color:var(--muted); display:flex; flex-direction:column; gap:1px;
+  }
+  .scene-label.left{ left:6px; }
+  .scene-label.right{ right:6px; text-align:right; }
+  .scene-label .en{ font-size:9px; color:var(--grid-line); }
+  .scene-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding-top:20px; }
+  .scene-icons{ display:flex; align-items:center; gap:12px; }
+  .s-clock{ animation: tickspin 2s linear infinite; }
+  .s-gear{ animation: gearspin 1.1s linear infinite; }
+  @keyframes tickspin{ to{ transform:rotate(360deg); } }
+  @keyframes gearspin{ to{ transform:rotate(360deg); } }
+  .s-check{ opacity:0; animation: checkpop 4s ease-in-out infinite; }
+  .scene-bar{ width:78%; height:6px; border-radius:3px; background:rgba(255,255,255,0.06); overflow:hidden; }
+  .scene-fill{ height:100%; border-radius:3px; width:0%; }
+  .manual-fill{ background:var(--muted); animation: fillmanual 4s ease-in-out infinite; }
+  .auto-fill{ background:var(--amber); animation: fillauto 4s ease-in-out infinite; }
+  @keyframes fillmanual{
+    0%{ width:0%; } 55%{ width:60%; } 100%{ width:60%; }
+  }
+  @keyframes fillauto{
+    0%{ width:0%; } 8%{ width:0%; } 30%{ width:100%; } 100%{ width:100%; }
+  }
+  @keyframes checkpop{
+    0%{ opacity:0; } 28%{ opacity:0; } 34%{ opacity:1; } 96%{ opacity:1; } 100%{ opacity:0; }
+  }
+  .scene-tag{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--muted); }
+  .scene-tag.amber{ color:var(--amber); font-weight:600; }
 
-  /* ---------- EXPERIENCE ---------- */
+  @media (prefers-reduced-motion: reduce){
+    .s-clock, .s-gear{ animation:none; }
+  }
+
   .timeline{ margin-top:50px; position:relative; padding-left:32px; }
   .timeline::before{ content:''; position:absolute; left:0; top:6px; bottom:6px; width:1px; background:var(--grid-line); }
   .titem{ position:relative; padding-bottom:44px; }
@@ -140,27 +159,15 @@
   .titem ul li{ position:relative; padding-left:18px; margin-bottom:6px; }
   .titem ul li::before{ content:'—'; position:absolute; left:0; color:var(--grid-line); }
 
-  /* ---------- PROJECTS ---------- */
   .pgrid{ margin-top:50px; display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--grid-line); border:1px solid var(--grid-line);}
   .pcard{ background:var(--bg); padding:32px; transition:background .2s ease; }
   .pcard:hover{ background:var(--panel); }
   .pcard .rpt{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--amber); letter-spacing:0.06em; display:block; margin-bottom:14px; }
-  .pcard .rpt.wip::after{ content:' · WIP'; color:var(--danger); }
   .pcard h4{ font-size:18px; font-weight:700; margin-bottom:10px; line-height:1.4; }
   .pcard p{ color:var(--muted); font-size:14.5px; }
   .pcard .stack{ margin-top:16px; display:flex; flex-wrap:wrap; gap:6px; }
   .pcard .stack span{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--teal); border:1px solid var(--grid-line); padding:3px 8px; border-radius:999px; }
 
-  /* highlight stat */
-  .stat{
-    margin-top:56px; border:1px solid var(--grid-line); background:var(--panel);
-    padding:36px; display:flex; align-items:baseline; gap:24px; flex-wrap:wrap; border-radius:4px;
-  }
-  .stat .num{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:48px; color:var(--amber); }
-  .stat .num small{ font-size:20px; color:var(--teal); }
-  .stat .desc{ color:var(--muted); font-size:14.5px; max-width:60ch; }
-
-  /* ---------- SKILLS ---------- */
   .skillcols{ margin-top:50px; display:grid; grid-template-columns:1fr 1fr; gap:56px; }
   .skillcols h4{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--teal); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px; }
   .chips{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -169,7 +176,19 @@
   .learning{ margin-top:56px; border-left:2px solid var(--teal); padding-left:20px; color:var(--muted); font-size:14.5px; }
   .learning strong{ color:var(--text); }
 
-  /* ---------- CONTACT ---------- */
+  .edugrid{ margin-top:50px; }
+  .eduitem{ border:1px solid var(--grid-line); background:var(--panel); padding:28px 32px; border-radius:4px; }
+  .eduitem h3{ font-size:20px; font-weight:700; margin-bottom:8px; }
+  .eduitem .org{ color:var(--muted); font-size:14px; }
+
+  .certgrid{ margin-top:50px; display:grid; grid-template-columns:1.3fr 0.7fr; gap:56px; }
+  .certgrid h4{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--teal); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px; }
+  .certlist{ list-style:none; color:var(--muted); font-size:15px; }
+  .certlist li{ position:relative; padding-left:18px; margin-bottom:8px; }
+  .certlist li::before{ content:'—'; position:absolute; left:0; color:var(--grid-line); }
+  .langscore{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:40px; color:var(--amber); }
+  .langscore small{ display:block; font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px; color:var(--muted); margin-top:8px; letter-spacing:0.05em; }
+
   .contact-wrap{ text-align:center; padding-top:100px; padding-bottom:140px; }
   .contact-wrap h2{ font-family:'Noto Sans TC',sans-serif; font-weight:900; font-size:clamp(32px,5vw,52px); margin-bottom:20px; }
   .contact-wrap p{ color:var(--muted); margin-bottom:36px; }
@@ -188,13 +207,12 @@
     .hero{ grid-template-columns:1fr; padding-top:110px; min-height:auto; gap:48px;}
     .pgrid{ grid-template-columns:1fr; }
     .skillcols{ grid-template-columns:1fr; gap:36px; }
+    .certgrid{ grid-template-columns:1fr; gap:36px; }
   }
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
     .reveal{ opacity:1; transform:none; transition:none; }
-    .terminal .line{ opacity:1 !important; }
-    .cursor{ animation:none; }
   }
 
   a:focus-visible, button:focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
@@ -215,7 +233,9 @@
   <a href="#intro" class="active" data-target="intro"><span class="zh">簡介</span><span class="en">Intro</span></a>
   <a href="#experience" data-target="experience"><span class="zh">經歷</span><span class="en">Experience</span></a>
   <a href="#projects" data-target="projects"><span class="zh">專案</span><span class="en">Projects</span></a>
+  <a href="#education" data-target="education"><span class="zh">學歷</span><span class="en">Education</span></a>
   <a href="#skills" data-target="skills"><span class="zh">技能</span><span class="en">Skills</span></a>
+  <a href="#certs" data-target="certs"><span class="zh">證照</span><span class="en">Certs</span></a>
   <a href="#contact" data-target="contact"><span class="zh">聯絡</span><span class="en">Contact</span></a>
 </nav>
 
@@ -225,10 +245,10 @@
     <div>
       <span class="eyebrow"><span class="zh">中部汽車有限公司 · 保險分期室</span><span class="en">Toyota Dealership Group · Insurance &amp; Financing</span></span>
       <h1>江孟則</h1>
-      <p class="role"><span class="zh">用程式重寫保單與分期作業的<span class="accent">保險分期</span>專員</span><span class="en">An insurance &amp; financing specialist who <span class="accent">rewrites paperwork into code</span></span></p>
+      <p class="role"><span class="zh">結合審核判斷、財務分析與<span class="accent" style="color:var(--amber)">自動化工具</span>，讓分期與保險作業更有效率</span><span class="en">Blending underwriting judgment, financial analysis, and <span class="accent" style="color:var(--amber)">self-built automation</span> to run insurance and installment operations more efficiently</span></p>
       <p class="sub">
-        <span class="zh">從銀行體系出發,現於台中汽車經銷集團負責保險審核、分期融資分析與續保作業,並親自撰寫 Python 工具取代重複性的人工流程。</span>
-        <span class="en">Coming from a banking background, now handling insurance review, installment financing analysis, and renewal processing at a Taichung Toyota dealership group — and building Python tools along the way to replace manual busywork.</span>
+        <span class="zh">曾於銀行擔任櫃台實習，現任職於台中 Toyota 經銷集團保險分期室，統籌分期相關事務、要保書格式審核與續保作業。同時運用 Python 開發內部工具，將部分人工流程自動化，提升作業效率與準確度。</span>
+        <span class="en">Started with a teller internship at a bank, and now work in the insurance and financing department at a Taichung-based Toyota dealership group, leading installment-related work, insurance application form compliance review, and renewal processing. I also build Python-based internal tools to automate parts of the workflow, improving both efficiency and accuracy.</span>
       </p>
       <a class="btn" href="mailto:chianganan24@gmail.com">
         <span class="zh">寄封信給我</span><span class="en">Send an email</span> →
@@ -238,9 +258,31 @@
     <div class="terminal reveal" id="terminal">
       <div class="bar">
         <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <span class="mono">report_generator.py</span>
+        <span class="mono"><span class="zh">人工作業 對比 自動化</span><span class="en">manual vs automation</span></span>
       </div>
-      <div class="body" id="term-body"></div>
+      <div class="scene">
+        <div class="scene-divider"></div>
+        <div class="scene-label left"><span class="zh">人工作業</span><span class="en">MANUAL</span></div>
+        <div class="scene-label right"><span class="zh">自動化</span><span class="en">AUTOMATION</span></div>
+
+        <div class="scene-col left">
+          <div class="scene-icons">
+            <svg class="s-icon" viewBox="0 0 32 32" width="34" height="34"><g stroke="var(--muted)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="11" r="5"/><path d="M6 28c1.5-6 6-9 10-9s8.5 3 10 9"/></g></svg>
+            <svg class="s-icon s-clock" viewBox="0 0 32 32" width="26" height="26"><g stroke="var(--muted)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><path d="M16 9v7l5 3"/></g></svg>
+          </div>
+          <div class="scene-bar"><div class="scene-fill manual-fill"></div></div>
+          <div class="scene-tag"><span class="zh">≈ 30 分鐘</span><span class="en">≈ 30 min</span></div>
+        </div>
+
+        <div class="scene-col right">
+          <div class="scene-icons">
+            <svg class="s-icon s-gear" viewBox="0 0 32 32" width="34" height="34"><g stroke="var(--amber)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="6"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></g></svg>
+            <svg class="s-icon s-check" viewBox="0 0 32 32" width="26" height="26"><g stroke="var(--amber)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><path d="M11 16l4 4 7-8"/></g></svg>
+          </div>
+          <div class="scene-bar"><div class="scene-fill auto-fill"></div></div>
+          <div class="scene-tag amber"><span class="zh">一鍵完成</span><span class="en">One click</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -254,15 +296,15 @@
         <h3><span class="zh">保險分期室 專員</span><span class="en">Insurance &amp; Financing Specialist</span></h3>
         <div class="org"><span class="zh">中部汽車有限公司(Toyota 經銷集團)· 台中市西屯區</span><span class="en">Chungpu Motors Co., Ltd. (Toyota dealership group) · Xitun District, Taichung</span></div>
         <ul>
-          <li><span class="zh">保險審核:檢視要保書格式合規性</span><span class="en">Insurance underwriting — reviewing application forms (要保書) for formatting compliance</span></li>
-          <li><span class="zh">分期融資:處理分期貸款作業與融資比率分析,產出分期比報表</span><span class="en">Financing — processing installment loans and producing financing-ratio analysis and reports</span></li>
-          <li><span class="zh">續保作業:辦理續保保費扣款流程</span><span class="en">Renewals — handling renewal insurance deduction processing</span></li>
+          <li><span class="zh">保險審核：把關要保書格式合規性，確保送件正確無誤</span><span class="en">Insurance underwriting — reviewing application forms (要保書) for formatting compliance to ensure accurate submissions</span></li>
+          <li><span class="zh">續保作業：辦理續保相關流程，確保保單覆蓋不中斷</span><span class="en">Renewals — handling renewal processing to ensure uninterrupted policy coverage</span></li>
+          <li><span class="zh">投保狀況分析：追蹤各營業所新保及續保各險種的投保狀況</span><span class="en">Enrollment analysis — tracking new-business and renewal insurance status across product lines by branch</span></li>
         </ul>
       </div>
       <div class="titem reveal">
         <span class="date mono"><span class="zh">此前</span><span class="en">Earlier</span></span>
-        <h3><span class="zh">銀行體系 經歷</span><span class="en">Banking Background</span></h3>
-        <div class="org"><span class="zh">奠定金融審查與數字分析的基本功</span><span class="en">Built a foundation in financial review and quantitative analysis</span></div>
+        <h3><span class="zh">銀行櫃台實習</span><span class="en">Bank Teller Intern</span></h3>
+        <div class="org"><span class="zh">負責臨櫃業務辦理、客戶服務與基礎金融作業</span><span class="en">Handled over-the-counter transactions, customer service, and basic financial operations</span></div>
       </div>
     </div>
   </section>
@@ -274,57 +316,46 @@
     <div class="pgrid">
       <div class="pcard reveal">
         <span class="rpt">RPT-01</span>
-        <h4><span class="zh">續保扣除自動化系統</span><span class="en">Automated Renewal Deduction System</span></h4>
-        <p><span class="zh">以 Selenium 串接監理站與和泰系統查詢資料、自動截圖存證,並自動於 Outlook 產生回覆草稿。過程中發現並回報一項憑證硬編碼的資安疑慮(P0)。</span>
-        <span class="en">Uses Selenium to query the vehicle registration system and Hotai's internal platform, auto-saves screenshots as records, and drafts Outlook replies automatically. Flagged a P0 security issue (hardcoded credentials) for remediation along the way.</span></p>
-        <div class="stack"><span>Selenium</span><span>Outlook COM</span><span class="zh">監理站</span></div>
+        <h4><span class="zh">續保作業自動化</span><span class="en">Renewal Processing Automation</span></h4>
+        <p><span class="zh">建置涵蓋 Outlook 收信、監理網車牌查詢（OCR辨識牌照狀態）、保險系統查詢、結果比對與判定邏輯的完整自動化流程，並以案件總表追蹤每個案件的處理進度，將原本分散的人工比對作業整合為一鍵產出可寄送申請草稿。持續重構程式架構，並維護43組單元測試涵蓋核心判斷邏輯。</span>
+        <span class="en">Built an end-to-end automation pipeline covering Outlook email intake, license plate status lookup via OCR on the government vehicle registry, insurance system queries, and cross-referenced verdict logic, with a case-tracking spreadsheet — consolidating a manual, multi-step process into a one-click workflow. Continuously refactored the codebase and maintain 43 unit tests covering core judgment logic.</span></p>
+        <div class="stack"><span>Selenium</span><span>Outlook COM</span><span>pytest</span></div>
       </div>
 
       <div class="pcard reveal">
         <span class="rpt">RPT-02</span>
-        <h4><span class="zh">分期比報表一鍵產生工具</span><span class="en">One-click Financing Ratio Reports</span></h4>
-        <p><span class="zh">將原本需要人工彙整的分期融資比率報表(分期比),改為一鍵產生,取代手動作業。</span>
-        <span class="en">Turned a previously manual installment-financing-ratio (分期比) report compilation into a one-click generator.</span></p>
-        <div class="stack"><span>Python</span><span>python-docx</span></div>
+        <h4><span class="zh">車名銷售與分期比統計系統</span><span class="en">Sales &amp; Installment-Ratio Analytics System</span></h4>
+        <p><span class="zh">開發整合式銷售資料分析工具，自動產出車名、課別、所別多維度交叉統計，並整合分期週報表計算各所別/課別分期比，同時涵蓋租賃業績與達成率統計。系統具備可編輯對照表機制處理例外情況，原為每週約30分鐘的人工整理流程，現已整合為一鍵產出。</span>
+        <span class="en">Built an integrated sales-data analysis tool that automatically produces multi-dimensional cross-tabs by car model, department, and branch, incorporates weekly installment reports to calculate installment ratios, and covers rental performance stats. Includes editable mapping tables for exceptions. What used to be a ~30-minute weekly manual process is now one click.</span></p>
+        <div class="stack"><span>Python</span><span>openpyxl</span><span>pandas</span></div>
       </div>
 
       <div class="pcard reveal">
         <span class="rpt">RPT-03</span>
-        <h4><span class="zh">RAV4 零利率分期方案分析</span><span class="en">RAV4 Zero-interest Financing Analysis</span></h4>
-        <p><span class="zh">在和泰取消原有促銷方案後,提出自營零利率分期方案的主管分析報告,釐清單純的年增比較其實混雜了客群重新分類的機械性效果與真實行為變化。</span>
-        <span class="en">Proposed a supervisor analysis for a self-run zero-interest financing program after the manufacturer's own promotion was cancelled — separating genuine behavioral change from the mechanical effect of customer reclassification.</span></p>
-        <div class="stack"><span class="zh">差異中之差異分析</span><span class="en">Diff-in-diff</span></div>
+        <h4><span class="zh">業績分析報告自動化系統</span><span class="en">Performance Report Automation System</span></h4>
+        <p><span class="zh">開發整合自動化系統，自動登入下載各所別業績資料，透過自訂同權平均排名演算法計算綜合評分與名次，並整合 Gemini API 產生報告文字分析，最終自動產出 Excel 報告並建立 Outlook 草稿寄送，取代原本人工彙整、計算、比較的流程。</span>
+        <span class="en">Built an end-to-end automation system that downloads branch-level sales data, applies a custom equal-weighted ranking algorithm to score and rank branches, integrates the Gemini API for written analysis, and produces an Excel report with an auto-drafted Outlook email.</span></p>
+        <div class="stack"><span>Gemini API</span><span>Outlook COM</span><span>openpyxl</span></div>
       </div>
 
       <div class="pcard reveal">
         <span class="rpt">RPT-04</span>
-        <h4><span class="zh">dealer_toolkit 內部工具包</span><span class="en">dealer_toolkit — Internal Package</span></h4>
-        <p><span class="zh">將工作中累積的多個 Python 工具整併為一個內部套件,採用 src/ 專案結構與可編輯安裝模式,並持續補齊測試覆蓋率。</span>
-        <span class="en">Consolidating multiple in-house Python tools into a single internal package with a src/ layout and editable install pattern, with ongoing work on test coverage.</span></p>
-        <div class="stack"><span>Python</span><span>pytest</span><span>CustomTkinter</span></div>
-      </div>
-
-      <div class="pcard reveal">
-        <span class="rpt wip">RPT-05</span>
-        <h4><span class="zh">保險文件異常標記層</span><span class="en">Anomaly-flagging Layer for Insurance Docs</span></h4>
-        <p><span class="zh">在既有的 Gemini 視覺文件解析流程之上,嘗試加入異常標記層,協助辨識保險文件中的問題項目。</span>
-        <span class="en">Exploring an anomaly-flagging layer on top of an existing Gemini-vision document-parsing pipeline for insurance documents.</span></p>
-        <div class="stack"><span>Gemini API</span></div>
-      </div>
-
-      <div class="pcard reveal">
-        <span class="rpt">RPT-06</span>
-        <h4><span class="zh">工作日誌桌面工具</span><span class="en">Work Journal Desktop App</span></h4>
-        <p><span class="zh">以 CustomTkinter 與 SQLite 打造個人工作日誌工具。</span>
-        <span class="en">Built a personal work-journal desktop tool using CustomTkinter and SQLite.</span></p>
+        <h4><span class="zh">工作日誌工具</span><span class="en">Work Journal Tool</span></h4>
+        <p><span class="zh">每日需處理大量文書作業，自行開發桌面工具記錄每日工作內容與進度，方便掌握工作狀況、避免遺漏。</span>
+        <span class="en">Facing a high daily volume of paperwork, built a desktop tool to log daily tasks and progress, making it easier to track work status and avoid missed items.</span></p>
         <div class="stack"><span>CustomTkinter</span><span>SQLite</span></div>
       </div>
     </div>
+  </section>
 
-    <div class="stat reveal">
-      <div class="num">2.83<small>pp</small></div>
-      <div class="desc"><span class="zh">差異中之差異分析顯示,同期集團分期滲透率的下滑幅度較對照組基準多出約 2.83 個百分點 —— 這是釐清「真實需求變化」與「客群重新分類的機械效果」後得出的結果。</span>
-      <span class="en">A difference-in-differences analysis found group-wide financing penetration fell roughly 2.83 percentage points more than the control benchmark, after separating real demand shifts from the mechanical effect of customer reclassification.</span></div>
+  <section id="education">
+    <span class="eyebrow"><span class="zh">學歷</span><span class="en">Education</span></span>
+    <h2 class="sectitle reveal"><span class="zh">教育背景</span><span class="en">Academic Background</span></h2>
+    <div class="edugrid reveal">
+      <div class="eduitem">
+        <h3><span class="zh">國立中正大學 財務金融學系</span><span class="en">B.A./B.S. in Finance, National Chung Cheng University</span></h3>
+        <div class="org mono"><span class="zh">2025年畢業</span><span class="en">Graduated 2025</span></div>
+      </div>
     </div>
   </section>
 
@@ -336,32 +367,54 @@
       <div class="reveal">
         <h4><span class="zh">保險 · 分期業務</span><span class="en">Insurance &amp; Financing</span></h4>
         <div class="chips">
-          <span><span class="zh">保險審核</span><span class="en">Insurance underwriting</span></span>
-          <span><span class="zh">分期貸款作業</span><span class="en">Installment loan processing</span></span>
-          <span><span class="zh">融資分析</span><span class="en">Financing analysis</span></span>
-          <span><span class="zh">續保作業</span><span class="en">Renewal processing</span></span>
+          <span><span class="zh">保險審核判斷</span><span class="en">Insurance underwriting</span></span>
+          <span><span class="zh">分期比統計分析</span><span class="en">Installment ratio analysis</span></span>
+          <span><span class="zh">財務報表分析</span><span class="en">Financial statement analysis</span></span>
           <span><span class="zh">銀行背景</span><span class="en">Banking background</span></span>
         </div>
       </div>
       <div class="reveal">
-        <h4><span class="zh">技術 · 自動化</span><span class="en">Technical &amp; Automation</span></h4>
+        <h4><span class="zh">AI 輔助開發 · 常用套件</span><span class="en">AI-Assisted Development · Libraries</span></h4>
         <div class="chips">
-          <span>Python</span><span>Selenium</span><span>CustomTkinter</span><span>python-docx</span>
-          <span>Gemini API</span><span>Outlook COM</span><span>SQLite</span><span>pytest</span>
+          <span>Python</span><span>Selenium</span><span>openpyxl</span><span>pandas</span>
+          <span>CustomTkinter</span><span>pywin32 / win32com</span><span>pytesseract</span>
+          <span>Pillow</span><span>pytest</span><span>sqlite3</span><span>Gemini API</span>
         </div>
       </div>
     </div>
 
     <div class="learning reveal">
-      <span class="zh"><strong>目前進修:</strong>於逢甲大學修讀政府補助 Python 基礎課程(08/15–10/17,週六)</span>
-      <span class="en"><strong>Currently learning:</strong> Government-subsidized Python fundamentals course at Feng Chia University (Aug 15 – Oct 17, Saturdays)</span>
+      <span class="zh"><strong>目前進修：</strong>於逢甲大學修讀政府補助 Python 基礎課程</span>
+      <span class="en"><strong>Currently learning:</strong> Government-subsidized Python fundamentals course at Feng Chia University</span>
+    </div>
+  </section>
+
+  <section id="certs">
+    <span class="eyebrow"><span class="zh">證照與語言</span><span class="en">Certifications &amp; Language</span></span>
+    <h2 class="sectitle reveal"><span class="zh">資格認證</span><span class="en">Qualifications</span></h2>
+
+    <div class="certgrid">
+      <div class="reveal">
+        <h4><span class="zh">金融證照</span><span class="en">Financial Certifications</span></h4>
+        <ul class="certlist">
+          <li><span class="zh">證券商高級業務員</span><span class="en">Senior Securities Specialist</span></li>
+          <li><span class="zh">財產保險業務員資格</span><span class="en">Property Insurance Sales Qualification</span></li>
+          <li><span class="zh">初階授信人員</span><span class="en">Junior Credit Personnel</span></li>
+          <li><span class="zh">信託業務人員信託業務專業測驗</span><span class="en">Trust Business Specialist</span></li>
+          <li><span class="zh">（另有其他金融相關證照共9張）</span><span class="en">(plus 9 financial certifications in total)</span></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h4><span class="zh">語言能力</span><span class="en">Language</span></h4>
+        <div class="langscore">840<small>TOEIC</small></div>
+      </div>
     </div>
   </section>
 
   <section id="contact">
     <div class="contact-wrap">
       <span class="eyebrow"><span class="zh">聯絡</span><span class="en">Get in touch</span></span>
-      <h2><span class="zh">有合作或職缺想聊聊?</span><span class="en">Have a role or project to discuss?</span></h2>
+      <h2><span class="zh">有合作或職缺想聊聊？</span><span class="en">Have a role or project to discuss?</span></h2>
       <p><span class="zh">歡迎透過 Email 與我聯繫。</span><span class="en">Feel free to reach out by email.</span></p>
       <a class="btn" href="mailto:chianganan24@gmail.com">chianganan24@gmail.com →</a>
       <div>
@@ -373,17 +426,13 @@
 </main>
 
 <script>
-  // language toggle
   function setLang(lang){
     document.body.classList.toggle('lang-en', lang === 'en');
     document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.documentElement.lang = lang === 'en' ? 'en' : 'zh-Hant';
-    localStorage_safe_set(lang);
   }
-  function localStorage_safe_set(){ /* no-op: browser storage intentionally unused */ }
 
-  // scrollspy for tab nav
   const sections = document.querySelectorAll('main section');
   const navLinks = document.querySelectorAll('.tabnav a');
   const spy = new IntersectionObserver((entries)=>{
@@ -397,7 +446,6 @@
   }, { rootMargin: '-40% 0px -50% 0px' });
   sections.forEach(s=>spy.observe(s));
 
-  // reveal on scroll
   const revealItems = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
@@ -406,51 +454,7 @@
   }, { threshold: 0.15 });
   revealItems.forEach(i=>revealObs.observe(i));
 
-  // terminal typing sequence
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const termLines = [
-    { p: '&gt; ', t: '讀取原始資料 raw_data.xlsx ...', en: 'reading raw_data.xlsx ...' },
-    { p: '&gt; ', t: '套用審核規則 apply_rules() ...', en: 'applying underwriting rules ...' },
-    { p: '&gt; ', t: '產生分期比報表 render_report() ...', en: 'rendering financing-ratio report ...' },
-    { p: '', t: '完成 ✓ report_2026Q3.docx', en: 'done ✓ report_2026Q3.docx', done:true },
-  ];
-  const body = document.getElementById('term-body');
-
-  function buildLine(item){
-    const div = document.createElement('div');
-    div.className = 'line' + (item.done ? ' done' : '');
-    body.appendChild(div);
-    return div;
-  }
-
-  function typeInto(div, text, cb){
-    let i = 0;
-    const speed = 18;
-    function step(){
-      div.innerHTML = text.slice(0, i);
-      i++;
-      if(i <= text.length){ setTimeout(step, speed); }
-      else if(cb){ cb(); }
-    }
-    step();
-  }
-
-  function runSequence(idx){
-    if(idx >= termLines.length) return;
-    const item = termLines[idx];
-    const div = buildLine(item);
-    div.style.opacity = 1;
-    const promptSpan = item.p ? '<span class="prompt">'+item.p+'</span>' : '';
-    const full = promptSpan + (document.body.classList.contains('lang-en') ? item.en : item.t);
-    if(reduceMotion){
-      div.innerHTML = full;
-      runSequence(idx+1);
-    } else {
-      typeInto(div, full, ()=> setTimeout(()=>runSequence(idx+1), 260));
-    }
-  }
-
-  setTimeout(()=>runSequence(0), 500);
+  // Manual-vs-automation scene animation is handled entirely via CSS keyframes (see .scene-fill etc.)
 </script>
 
 </body>
